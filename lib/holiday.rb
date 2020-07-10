@@ -39,13 +39,7 @@ end
 def add_supply_to_memorial_day(holiday_hash, supply)
   # again, holiday_hash is the same as the ones above
   # add the second argument to the memorial day array
-  holiday_hash.each do |season, event|
-    if season == :spring 
-      event.each do |holiday, data|
-        data << supply 
-      end 
-    end 
-  end
+  holiday_hash[:spring][:memorial_day] << supply 
 end
 
 def add_new_holiday_with_supplies(holiday_hash, season, holiday_name, supply_array)
@@ -79,28 +73,20 @@ def all_supplies_in_holidays(holiday_hash)
       puts "  #{holiday_rev.join(" ")}: #{data.join(", ")}"
     end 
   end 
-
 end
 
 def all_holidays_with_bbq(holiday_hash)
   # return an array of holiday names (as symbols) where supply lists
   # include the string "BBQ"
-  holiday_supplies = []
-  holiday_hash.each do |season, event|
-    event.each do |holiday, data|
-      data.each do |supply| 
-        if supply == "BBQ"
-          holiday_supplies << holiday
-        end
-      end
+  holiday_hash.map do |season, event|
+    event.map do |holiday, data|
+      if data.include?("BBQ")
+        holiday
+      end 
     end
-  end 
-holiday_supplies
-end
+  end
+  .flatten.compact
+end 
 
-
-
-
-
-
-
+### .flatten flattens arrays into one-dimension
+### .compact removes nil items
